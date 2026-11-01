@@ -1,0 +1,15 @@
+<div id="footer1">Copyright &copy; <span id="copyrightYear"></span> <a href="{{ blogBase['homeUrl'] }}">{{ blogBase['title'] }}</a></div>
+<div id="footer2" style="margin-top:4px;">
+  {% if blogBase['filingNum'] %}
+  <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">{{ blogBase['filingNum'] }}</a> &middot; </span>
+  {% endif %}
+  <span id="runday"></span><span>Powered by <a href="https://github.com/Meekdai/Gmeek" target="_blank">Gmeek</a></span>
+</div>
+<script>
+  document.getElementById("copyrightYear").textContent = new Date().getFullYear();
+  if ("{{ blogBase['startSite'] }}" !== "") {
+    var start = new Date("{{ blogBase['startSite'] }}");
+    var diffDay = Math.floor((Date.now() - start.getTime()) / 86400000);
+    document.getElementById("runday").textContent = "网站运行 " + diffDay + " 天 &middot; ";
+  }
+</script>

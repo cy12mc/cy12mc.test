@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block head %}
+<meta name="description" content="{{ blogBase['title'] }} tag search" />
+<title>{{ blogBase['title'] }} - Tag</title>
+{% endblock %}
+
+{% block style %}
+<style>
+  .tagTitle { margin: 0 0 16px; font-size: 28px; font-weight: 600; }
+  .title-right { display: flex; gap: 4px; }
+  .circle { border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--color-fg-muted); }
+  .circle:hover { color: var(--color-accent-fg); }
+  .tagList { list-style: none; padding: 0; }
+  .tagList li { display: inline-flex; align-items: center; margin: 4px 6px 4px 0; }
+  .tagList a { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 12px; font-size: 13px; font-weight: 500; text-decoration: none; border: 1px solid; }
+  .tagCount { margin-left: 4px; opacity: 0.7; font-size: 11px; }
+  @media (max-width: 600px) { body { padding: 12px; } }
+</style>
+{% endblock %}
+
+{% block header %}
+<div class="tagTitle">标签</div>
+<div class="title-right">
+  <a class="circle" onclick="modeSwitch()" title="切换主题" {% if blogBase['themeMode'] == 'fix' %}style="display:none;"{% endif %}>
+    <svg class="octicon" width="16" height="16"><path id="themeSwitch" fill-rule="evenodd"></path></svg>
+  </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<ul class="tagList">
+  {% for label, color in blogBase['labelColorDict'].items() %}
+  <li>
+    <a href="#{{ label }}" style="background-color:{{ color }};border-color:{{ color }};color:#fff;">
+      {{ label }}
+      <span class="tagCount">{{ postListJson[label] | length if postListJson[label] else 0 }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+<hr style="margin:24px 0;border:none;border-top:1px solid var(--color-border-default);" />
+{% for label, posts in postListJson.items() %}
+<section id="{{ label }}" style="margin-bottom:32px;">
+  <h2 style="margin-bottom:12px;font-size:18px;color:var(--color-fg-muted);">
+    <span style="background-color:{{ blogBase['labelColorDict'].get(label,'#ccc') }};color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;margin-right:8px;">{{ label }}</span>
+    {{ posts | length }} 篇文章
+  </h2>
+  <ul class="ListStyle" style="list-style:none;padding:0;">
+    {% for num in posts %}
+    <li style="padding:8px 0;border-bottom:1px solid var(--color-border-muted);">
+      <a href="{{ posts[num]['postUrl'] }}" style="font-weight:500;color:var(--color-accent-fg);text-decoration:none;">
+        {{ posts[num]['postTitle'] }}
+      </a>
+      <span style="float:right;color:var(--color-fg-muted);font-size:12px;">{{ posts[num]['createdDate'] }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}
+{% endblock %}

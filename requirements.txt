@@ -1,0 +1,4 @@
+PyGithub>=2.0
+Jinja2>=3.1
+xpinyin>=0.5.6
+feedgen>=1.0.0
